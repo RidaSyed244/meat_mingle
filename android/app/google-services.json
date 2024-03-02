@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "543380027593",
+    "project_id": "meat-mingle",
+    "storage_bucket": "meat-mingle.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543380027593:android:e68ad222690be145b37518",
+        "android_client_info": {
+          "package_name": "com.example.meat_mingle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEO9W3pZZwaJzCJ0ojWl0Vsqit1QKMWo4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

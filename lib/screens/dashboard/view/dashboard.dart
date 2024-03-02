@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meat_mingle/color%20pallete/colors.dart';
+import 'package:meat_mingle/custom%20data/custom%20containers/custom_containers.dart';
+import 'package:meat_mingle/screens/dashboard/widgets/widgets.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -11,7 +13,12 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
+    var hight = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
     return Scaffold(
+      backgroundColor: ColorPalette.appBGcolor,
+      bottomNavigationBar: BottomBar(hight: hight, width: width),
       drawer: Drawer(),
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black, size: 35),
@@ -37,6 +44,25 @@ class _DashboardState extends State<Dashboard> {
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.black)),
+      ),
+      body: ListView(
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        children: [
+          CustomContainers(
+            image: Image.asset(
+              "assets/images/chick.png",
+              fit: BoxFit.contain,
+            ),
+            name: "1 kg leg Chicken",
+            urduName: "1 کلو ٹانگ چکن",
+            price: 500,
+            count: 0,
+            totalPrice: 500,
+            addIcon: Icon(Icons.add),
+            removeIcon: Icon(Icons.remove),
+          )
+        ],
       ),
     );
   }
