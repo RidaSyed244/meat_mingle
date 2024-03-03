@@ -1,17 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meat_mingle/color%20pallete/colors.dart';
 import 'package:meat_mingle/custom%20data/custom%20buttons/custom_buttons.dart';
 import 'package:meat_mingle/custom%20data/custom%20text%20fields/custom_text_fields.dart';
 import 'package:meat_mingle/screens/phone%20authentication/controllers/controllers.dart';
+import 'package:meat_mingle/screens/user%20data/view/user_data_screen.dart';
 
-class PhoneAuth extends StatefulWidget {
+class PhoneAuth extends ConsumerStatefulWidget {
   const PhoneAuth({super.key});
+  static String verify = '';
 
   @override
-  State<PhoneAuth> createState() => _PhoneAuthState();
+  ConsumerState<PhoneAuth> createState() => _PhoneAuthState();
 }
 
-class _PhoneAuthState extends State<PhoneAuth> {
+class _PhoneAuthState extends ConsumerState<PhoneAuth> {
   @override
   Widget build(BuildContext context) {
     var hight = MediaQuery.of(context).size.height;
@@ -66,9 +70,27 @@ class _PhoneAuthState extends State<PhoneAuth> {
             ),
             SizedBox(height: 5),
             CustomTextFields(
-              prefixIcon: IconButton(onPressed: () {}, icon: Icon(Icons.email)),
+              prefixIcon:
+                  IconButton(onPressed: () async {}, icon: Icon(Icons.email)),
               suffixIcon: TextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await FirebaseAuth.instance.verifyPhoneNumber(
+                    phoneNumber: "${phoneController.text}",
+                    verificationCompleted: (PhoneAuthCredential credential) {
+                      print(credential);
+                    },
+                    verificationFailed: (FirebaseAuthException e) {
+                      print(e.message);
+                    },
+                    codeSent: (String verificationId, int? resendToken) {
+                      PhoneAuth.verify = verificationId;
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => UserData()));
+                    },
+                    codeAutoRetrievalTimeout: (String verificationId) {},
+                  );
+                  await ref.read(phoneMotifier.notifier).storeUserPhoneNo();
+                },
                 child: Text("Send Code",
                     style: TextStyle(
                         fontSize: 16,
