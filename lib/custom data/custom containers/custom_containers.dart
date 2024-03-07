@@ -11,7 +11,7 @@ class CustomContainers extends StatefulWidget {
   final Icon? removeIcon;
 
   const CustomContainers({
-    super.key,
+    Key? key,
     this.image,
     this.name,
     this.urduName,
@@ -20,7 +20,7 @@ class CustomContainers extends StatefulWidget {
     this.totalPrice,
     this.addIcon,
     this.removeIcon,
-  });
+  }) : super(key: key);
 
   @override
   State<CustomContainers> createState() => _CustomContainersState();
@@ -29,19 +29,25 @@ class CustomContainers extends StatefulWidget {
 class _CustomContainersState extends State<CustomContainers> {
   @override
   Widget build(BuildContext context) {
-    var hight = MediaQuery.of(context).size.height;
+    var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
     return Container(
-      color: Colors.white,
-      child: Column(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        crossAxisAlignment:
+            CrossAxisAlignment.start, // Align columns at the top
         children: [
-          Row(children: [
-            Column(
+          SizedBox(
+            width: width * 0.5, // Adjusted width for the image container
+            child: Column(
               children: [
                 Container(
-                  height: hight * 0.2,
-                  width: width * 0.6,
+                  height: height * 0.2,
+                  width: double.infinity,
                   child: widget.image ??
                       Text(
                         "Image not found",
@@ -54,10 +60,16 @@ class _CustomContainersState extends State<CustomContainers> {
                 )
               ],
             ),
-            SizedBox(
-              width: 2,
-            ),
-            Column(
+          ),
+          SizedBox(
+            width:
+                width * // Adjusted width for the space between the image and the content column
+                    0.05,
+          ),
+          SizedBox(
+            width: width * 0.4, // Adjusted width for the content column
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "${widget.name}",
@@ -101,23 +113,23 @@ class _CustomContainersState extends State<CustomContainers> {
                 ),
                 Row(
                   children: [
-                    Text("Total Price",
+                    Text("Total:   ",
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: width * 0.05,
                           fontWeight: FontWeight.w600,
                           color: Colors.black,
                         )),
-                    Text("${widget.totalPrice}    RS",
+                    Text("${widget.totalPrice} RS",
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: width * 0.05,
                           fontWeight: FontWeight.w600,
                           color: Colors.black,
                         )),
                   ],
                 ),
               ],
-            )
-          ])
+            ),
+          )
         ],
       ),
     );

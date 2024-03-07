@@ -84,12 +84,9 @@ class _PhoneAuthState extends ConsumerState<PhoneAuth> {
                     },
                     codeSent: (String verificationId, int? resendToken) {
                       PhoneAuth.verify = verificationId;
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => UserData()));
                     },
                     codeAutoRetrievalTimeout: (String verificationId) {},
                   );
-                  await ref.read(phoneMotifier.notifier).storeUserPhoneNo();
                 },
                 child: Text("Send Code",
                     style: TextStyle(
@@ -124,7 +121,7 @@ class _PhoneAuthState extends ConsumerState<PhoneAuth> {
               keyBoardType: TextInputType.phone,
               height: 50,
               width: 300,
-              controller: phoneController,
+              controller: otpController,
               textcolor: ColorPalette.appTextColor,
               onPressed: () {},
               color: ColorPalette.appBGcolor,
@@ -136,7 +133,20 @@ class _PhoneAuthState extends ConsumerState<PhoneAuth> {
               height: hight * 0.07,
               width: width * 0.9,
               textcolor: Colors.white,
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  PhoneAuthCredential credential = PhoneAuthProvider.credential(
+                      verificationId: PhoneAuth.verify,
+                      smsCode: otpController.text);
+                  await FirebaseAuth.instance.signInWithCredential(credential);
+
+                  await ref.read(phoneMotifier.notifier).storeUserPhoneNo();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => UserData()));
+                } catch (e) {
+                  throw Exception("Error occurred: $e");
+                }
+              },
               color: ColorPalette.appButtonsColor,
               fontSize: 20,
             )

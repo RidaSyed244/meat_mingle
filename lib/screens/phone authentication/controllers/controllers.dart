@@ -7,3 +7,4 @@ final TextEditingController phoneController = TextEditingController();
 final TextEditingController nameController = TextEditingController();
 final TextEditingController addressController = TextEditingController();
 final phoneMotifier = StateNotifierProvider((ref) => PhoneAuthState());
+final TextEditingController otpController = TextEditingController();

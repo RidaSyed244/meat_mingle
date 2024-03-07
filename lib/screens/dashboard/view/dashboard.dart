@@ -45,25 +45,29 @@ class _DashboardState extends State<Dashboard> {
                 fontWeight: FontWeight.bold,
                 color: Colors.black)),
       ),
-      body: ListView(
-        physics: BouncingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        children: [
-          CustomContainers(
-            image: Image.asset(
-              "assets/images/chick.png",
-              fit: BoxFit.contain,
-            ),
-            name: "1 kg leg Chicken",
-            urduName: "1 کلو ٹانگ چکن",
-            price: 500,
-            count: 0,
-            totalPrice: 500,
-            addIcon: Icon(Icons.add),
-            removeIcon: Icon(Icons.remove),
-          )
-        ],
-      ),
+      body: ListView.separated(
+          separatorBuilder: (context, index) => SizedBox(
+                height: 10,
+              ),
+          itemCount: 4,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CustomContainers(
+                image: Image.asset(
+                  "assets/images/chick.png",
+                  fit: BoxFit.contain,
+                ),
+                name: "1 kg leg Chicken",
+                urduName: "1 کلو ٹانگ چکن",
+                price: 500,
+                count: 0,
+                totalPrice: 500,
+                addIcon: Icon(Icons.add),
+                removeIcon: Icon(Icons.remove),
+              ),
+            );
+          }),
     );
   }
 }
