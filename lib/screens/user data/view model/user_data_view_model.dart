@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:location/location.dart';
+import 'package:meat_mingle/screens/phone%20authentication/controllers/controllers.dart';
 
 class UserDataModel extends StateNotifier {
   UserDataModel() : super(0);
@@ -33,6 +36,17 @@ class UserDataModel extends StateNotifier {
 
     print('Latitude: ${_currentLocation!.latitude}');
     print('Longitude: ${_currentLocation!.longitude}');
+  }
+
+  Future<void> addUserData() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .set({
+      'userName': nameController.text,
+      'userLat': _currentLocation!.longitude,
+      'userLong': _currentLocation!.latitude,
+    });
   }
 
   void showCustomSnackbar(

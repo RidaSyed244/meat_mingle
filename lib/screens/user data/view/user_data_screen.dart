@@ -112,6 +112,11 @@ class _UserDataState extends ConsumerState<UserData> {
                     .read(userDataModel.notifier)
                     .setSelectedOption(value as int);
                 await ref.watch(userDataModel.notifier).getCurrentLocation();
+                ref.read(userDataModel.notifier).showCustomSnackbar(
+                      context,
+                      "Got It!!!",
+                      "Your current location has been saved. You can now proceed.",
+                    );
               },
               activeColor: Colors.black, // Change the fill color when selected
             ),
@@ -123,6 +128,10 @@ class _UserDataState extends ConsumerState<UserData> {
                 ref
                     .read(userDataModel.notifier)
                     .setSelectedOption(value as int);
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => MapSceen()),
+                // );
               },
               activeColor: Colors.black, // Change the fill color when selected
             ),
