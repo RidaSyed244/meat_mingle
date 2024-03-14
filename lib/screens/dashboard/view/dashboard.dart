@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meat_mingle/color%20pallete/colors.dart';
 import 'package:meat_mingle/custom%20data/custom%20containers/custom_containers.dart';
+import 'package:meat_mingle/screens/dashboard/view%20model/dashboard_view_model.dart';
 import 'package:meat_mingle/screens/dashboard/widgets/widgets.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
-class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+final dashboardModel = ChangeNotifierProvider((ref) => DashboardModel());
+
+class Dashboard extends ConsumerStatefulWidget {
+  const Dashboard({Key? key}) : super(key: key);
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  ConsumerState<Dashboard> createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardState extends ConsumerState<Dashboard> {
   @override
   Widget build(BuildContext context) {
-    var hight = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       backgroundColor: ColorPalette.appBGcolor,
-      bottomNavigationBar: BottomBar(hight: hight, width: width),
+      bottomNavigationBar: BottomBar(),
       drawer: Drawer(),
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black, size: 35),
@@ -32,42 +34,87 @@ class _DashboardState extends State<Dashboard> {
               borderRadius: BorderRadius.circular(70),
               child: Image.asset(
                 "assets/images/meat_logo.png",
-                height: 50,
-                width: 50,
+                height: 14.h,
+                width: 14.w,
                 fit: BoxFit.cover,
               ),
             ),
           ),
         ],
-        title: Text("30 منٹ میں تازہ چکن اپ کے دروازے پر",
-            style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black)),
+        title: Text(
+          "30 منٹ میں تازہ چکن اپ کے دروازے پر",
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
       ),
       body: ListView.separated(
-          separatorBuilder: (context, index) => SizedBox(
-                height: 10,
-              ),
-          itemCount: 4,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CustomContainers(
-                image: Image.asset(
-                  "assets/images/chick.png",
-                  fit: BoxFit.contain,
+        separatorBuilder: (context, index) => SizedBox(height: 1.h),
+        itemCount: itemList.length,
+        itemBuilder: (context, index) {
+          Map<String, dynamic> item = itemList[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    // setState(() {
+                    //   selectedItems[index] = !(selectedItems[index] ?? false);
+                    // });
+                  },
+                  child: Container(
+                    width: 8.w,
+                    height: 4.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Colors.white,
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 2,
+                      ),
+                    ),
+                    child: selectedItems[index] == true
+                        ? Center(
+                            child: Container(
+                              width: 4.w,
+                              height: 4.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.yellow,
+                              ),
+                            ),
+                          )
+                        : SizedBox(),
+                  ),
                 ),
-                name: "1 kg leg Chicken",
-                urduName: "1 کلو ٹانگ چکن",
-                price: 500,
-                count: 0,
-                totalPrice: 500,
-                addIcon: Icon(Icons.add),
-                removeIcon: Icon(Icons.remove),
-              ),
-            );
-          }),
+                SizedBox(width: 4),
+                Expanded(
+                  child: CustomContainers(
+                      image: Image.asset(
+                        item['imagePath'],
+                        fit: BoxFit.contain,
+                      ),
+                      name: item['name'],
+                      urduName: item['urduName'],
+                      price: item['price'],
+                      count: ref.watch(dashboardModel.notifier).counter,
+                      totalPrice: item['totalPrice'],
+                      addIcon: Icon(Icons.add),
+                      icon1pess: () async {
+                        await ref.watch(dashboardModel.notifier).increment();
+                        print("Pressded");
+                        print("${ref.watch(dashboardModel.notifier).counter}");
+                      },
+                      removeIcon: Icon(Icons.remove)),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class BottomBar extends StatelessWidget {
   const BottomBar({
     super.key,
-    required this.hight,
-    required this.width,
   });
-
-  final double hight;
-  final double width;
 
   @override
   Widget build(BuildContext context) {
@@ -22,26 +18,24 @@ class BottomBar extends StatelessWidget {
             children: [
               Text("Free Delivery More than 5 Kg",
                   style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
                       color: Colors.black)),
               Text("Delivery Charges 40 Rs",
                   style: TextStyle(
-                      fontSize: 13,
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.w400,
                       color: Colors.black))
             ],
           ),
         ),
-        SizedBox(
-          height: 10,
-        ),
+        SizedBox(height: 1.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: hight * 0.07,
-              width: width * 0.9,
+              height: 7.h,
+              width: 90.w,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25.0),
                   color: Colors.white),
@@ -52,20 +46,20 @@ class BottomBar extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text('Total',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
                             color: Colors.black)),
                   ),
                   Text('000000',
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
                           color: Colors.black)),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text('کل',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
                             color: Colors.black)),
                   ),
@@ -84,23 +78,24 @@ class BottomBar extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 3.0),
                   child: Container(
-                    height: hight * 0.06,
-                    width: width * 0.3,
+                    height: 6.h,
+                    width: 27.w,
                     color: Colors.green,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.chat, color: Colors.white),
-                        SizedBox(width: 10),
+                        SizedBox(width: 2.w),
                         Text('Chat', style: TextStyle(color: Colors.white)),
                       ],
                     ),
                   ),
                 ),
               ),
+              SizedBox(height: 1.h),
               Container(
-                height: hight * 0.05,
-                width: width * 0.6,
+                height: 7.h,
+                width: 60.w,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25.0),
                     color: Colors.white),
@@ -133,3 +128,39 @@ class BottomBar extends StatelessWidget {
     );
   }
 }
+
+Map<int, bool> selectedItems = {};
+List<Map<String, dynamic>> itemList = [
+  {
+    'imagePath': "assets/images/chick.png",
+    'name': "1 kg leg Chicken",
+    'urduName': "1 کلو ٹانگ چکن",
+    'price': 500,
+    'count': 0,
+    'totalPrice': 500,
+  },
+  {
+    'imagePath': "assets/images/chick.png",
+    'name': "1 kg leg Chicken",
+    'urduName': "1 کلو ٹانگ چکن",
+    'price': 500,
+    'count': 0,
+    'totalPrice': 500,
+  },
+  {
+    'imagePath': "assets/images/chick.png",
+    'name': "1 kg leg Chicken",
+    'urduName': "1 کلو ٹانگ چکن",
+    'price': 500,
+    'count': 0,
+    'totalPrice': 500,
+  },
+  {
+    'imagePath': "assets/images/chick.png",
+    'name': "1 kg leg Chicken",
+    'urduName': "1 کلو ٹانگ چکن",
+    'price': 500,
+    'count': 0,
+    'totalPrice': 500,
+  },
+];

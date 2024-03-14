@@ -8,6 +8,9 @@ class CustomContainers extends StatefulWidget {
   final int? count;
   final int? totalPrice;
   final Icon? addIcon;
+  final VoidCallback? icon1pess;
+  final VoidCallback? icon2pess;
+
   final Icon? removeIcon;
 
   const CustomContainers({
@@ -15,6 +18,8 @@ class CustomContainers extends StatefulWidget {
     this.image,
     this.name,
     this.urduName,
+    this.icon1pess,
+    this.icon2pess,
     this.price,
     this.count,
     this.totalPrice,
@@ -42,7 +47,7 @@ class _CustomContainersState extends State<CustomContainers> {
             CrossAxisAlignment.start, // Align columns at the top
         children: [
           SizedBox(
-            width: width * 0.5, // Adjusted width for the image container
+            width: width * 0.4, // Adjusted width for the image container
             child: Column(
               children: [
                 Container(
@@ -94,7 +99,7 @@ class _CustomContainersState extends State<CustomContainers> {
                 Row(
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: widget.icon1pess,
                       icon: widget.addIcon!,
                       iconSize: 33,
                     ),
@@ -105,7 +110,7 @@ class _CustomContainersState extends State<CustomContainers> {
                           color: Colors.black,
                         )),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: widget.icon2pess,
                       icon: widget.removeIcon!,
                       iconSize: 33,
                     ),

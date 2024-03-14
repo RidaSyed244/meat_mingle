@@ -44,8 +44,8 @@ class UserDataModel extends StateNotifier {
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .set({
       'userName': nameController.text,
-      'userLat': _currentLocation!.longitude,
-      'userLong': _currentLocation!.latitude,
+      'userLat': _currentLocation?.longitude,
+      'userLong': _currentLocation?.latitude,
     });
   }
 
