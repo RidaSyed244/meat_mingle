@@ -18,6 +18,7 @@ class Dashboard extends ConsumerStatefulWidget {
 class _DashboardState extends ConsumerState<Dashboard> {
   @override
   Widget build(BuildContext context) {
+    final cart = ref.watch(dashboardModel);
     return Scaffold(
       backgroundColor: ColorPalette.appBGcolor,
       bottomNavigationBar: BottomBar(),
@@ -54,59 +55,56 @@ class _DashboardState extends ConsumerState<Dashboard> {
         separatorBuilder: (context, index) => SizedBox(height: 1.h),
         itemCount: itemList.length,
         itemBuilder: (context, index) {
-          Map<String, dynamic> item = itemList[index];
+          final item = itemList[index];
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             child: Row(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    // setState(() {
-                    //   selectedItems[index] = !(selectedItems[index] ?? false);
-                    // });
-                  },
-                  child: Container(
-                    width: 8.w,
-                    height: 4.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.white,
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 2,
-                      ),
-                    ),
-                    child: selectedItems[index] == true
-                        ? Center(
-                            child: Container(
-                              width: 4.w,
-                              height: 4.h,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.yellow,
-                              ),
-                            ),
-                          )
-                        : SizedBox(),
-                  ),
-                ),
+//                 GestureDetector(
+//                   onTap: () {
+//                     // setState(() {
+// \                    // });
+//                   },
+//                   child: Container(
+//                     width: 8.w,
+//                     height: 4.h,
+//                     decoration: BoxDecoration(
+//                       borderRadius: BorderRadius.circular(15),
+//                       color: Colors.white,
+//                       border: Border.all(
+//                         color: Colors.black,
+//                         width: 2,
+//                       ),
+//                     ),
+//                     child: cart.selectedItemIndex == true
+//                         ? Center(
+//                             child: Container(
+//                               width: 4.w,
+//                               height: 4.h,
+//                               decoration: BoxDecoration(
+//                                 shape: BoxShape.circle,
+//                                 color: Colors.yellow,
+//                               ),
+//                             ),
+//                           )
+//                         : SizedBox(),
+//                   ),
+//                 ),
                 SizedBox(width: 4),
                 Expanded(
                   child: CustomContainers(
                       image: Image.asset(
-                        item['imagePath'],
+                        item.imagePath.toString(),
                         fit: BoxFit.contain,
                       ),
-                      name: item['name'],
-                      urduName: item['urduName'],
-                      price: item['price'],
-                      count: ref.watch(dashboardModel.notifier).counter,
-                      totalPrice: item['totalPrice'],
+                      name: item.name,
+                      urduName: item.urduName,
+                      price: item.price,
+                      count: item.count,
+                      totalPrice: item.totalPrice,
                       addIcon: Icon(Icons.add),
                       icon1pess: () async {
-                        await ref.watch(dashboardModel.notifier).increment();
-                        print("Pressded");
-                        print("${ref.watch(dashboardModel.notifier).counter}");
+                        await ref.read(dashboardModel).increment(item);
                       },
                       removeIcon: Icon(Icons.remove)),
                 ),

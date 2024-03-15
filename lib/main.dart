@@ -25,14 +25,14 @@ void callbackDispatcher() {
 Future<void> main() async {
   await WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
-  Workmanager().registerPeriodicTask(
-    "1",
-    "get_location_background_task",
-    frequency: Duration(minutes: 2), // Change the frequency to 5 seconds
-  );
+  // Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+  // Workmanager().registerPeriodicTask(
+  //   "1",
+  //   "get_location_background_task",
+  //   frequency: Duration(minutes: 2), // Change the frequency to 5 seconds
+  // );
 
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -41,11 +41,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveSizer(builder: (context, orientation, screenType) {
-      return ProviderScope(
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          home: Dashboard(),
-        ),
+      return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Dashboard(),
       );
     });
   }

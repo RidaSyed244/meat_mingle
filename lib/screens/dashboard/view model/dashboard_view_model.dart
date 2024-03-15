@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:meat_mingle/screens/dashboard/model/dashboard_model.dart';
 
 class DashboardModel extends ChangeNotifier {
-  int counter = 0;
-  int producPprice = 0;
-  int totalPrice = 0;
-  increment() {
-    counter++;
+  increment(SelectedItems selectedItems) {
+    selectedItems.count++;
     notifyListeners();
   }
 
-  void decrement() {
-    counter--;
+  void decrement(SelectedItems selectedItems) {
+    selectedItems.count--;
     notifyListeners();
   }
 
-  void totall() {
-    totalPrice = counter * producPprice;
-    notifyListeners();
-  }
+  // void totall() {
+  //   notifyListeners();
+  // }
 }

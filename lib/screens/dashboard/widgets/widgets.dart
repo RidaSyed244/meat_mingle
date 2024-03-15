@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meat_mingle/screens/dashboard/model/dashboard_model.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class BottomBar extends StatelessWidget {
@@ -129,38 +130,41 @@ class BottomBar extends StatelessWidget {
   }
 }
 
-Map<int, bool> selectedItems = {};
-List<Map<String, dynamic>> itemList = [
-  {
-    'imagePath': "assets/images/chick.png",
-    'name': "1 kg leg Chicken",
-    'urduName': "1 کلو ٹانگ چکن",
-    'price': 500,
-    'count': 0,
-    'totalPrice': 500,
-  },
-  {
-    'imagePath': "assets/images/chick.png",
-    'name': "1 kg leg Chicken",
-    'urduName': "1 کلو ٹانگ چکن",
-    'price': 500,
-    'count': 0,
-    'totalPrice': 500,
-  },
-  {
-    'imagePath': "assets/images/chick.png",
-    'name': "1 kg leg Chicken",
-    'urduName': "1 کلو ٹانگ چکن",
-    'price': 500,
-    'count': 0,
-    'totalPrice': 500,
-  },
-  {
-    'imagePath': "assets/images/chick.png",
-    'name': "1 kg leg Chicken",
-    'urduName': "1 کلو ٹانگ چکن",
-    'price': 500,
-    'count': 0,
-    'totalPrice': 500,
-  },
+List<SelectedItems> itemList = [
+  SelectedItems(
+    imagePath: "assets/images/chick.png",
+    name: "1 kg leg Chicken",
+    urduName: "1 کلو ٹانگ چکن",
+    price: 500,
+    count: 0,
+    totalPrice: 500,
+    isSelected: false,
+  ),
+  SelectedItems(
+    imagePath: "assets/images/chick.png",
+    name: "1 kg leg Chicken",
+    urduName: "1 کلو ٹانگ چکن",
+    price: 500,
+    count: 0,
+    totalPrice: 500,
+    isSelected: false,
+  ),
+  SelectedItems(
+    imagePath: "assets/images/chick.png",
+    name: "1 kg leg Chicken",
+    urduName: "1 کلو ٹانگ چکن",
+    price: 500,
+    count: 0,
+    totalPrice: 500,
+    isSelected: false,
+  ),
+  SelectedItems(
+    imagePath: "assets/images/chick.png",
+    name: "1 kg leg Chicken",
+    urduName: "1 کلو ٹانگ چکن",
+    price: 500,
+    count: 0,
+    totalPrice: 500,
+    isSelected: false,
+  ),
 ];
