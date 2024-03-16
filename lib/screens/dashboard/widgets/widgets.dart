@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meat_mingle/screens/dashboard/model/dashboard_model.dart';
+import 'package:meat_mingle/screens/dashboard/view/dashboard.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class BottomBar extends StatelessWidget {
+class BottomBar extends ConsumerStatefulWidget {
   const BottomBar({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
+  ConsumerState<BottomBar> createState() => _BottomBarState();
+}
+
+class _BottomBarState extends ConsumerState<BottomBar> {
+  @override
   Widget build(BuildContext context) {
+    final cart = ref.watch(dashboardModel);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -17,16 +25,22 @@ class BottomBar extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Free Delivery More than 5 Kg",
-                  style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black)),
-              Text("Delivery Charges 40 Rs",
-                  style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black))
+              Text(
+                "Free Delivery More than 5 Kg",
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                "Delivery Charges 40 Rs",
+                style: TextStyle(
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
+              ),
             ],
           ),
         ),
@@ -38,31 +52,41 @@ class BottomBar extends StatelessWidget {
               height: 7.h,
               width: 90.w,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25.0),
-                  color: Colors.white),
+                borderRadius: BorderRadius.circular(25.0),
+                color: Colors.white,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text('Total',
-                        style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black)),
-                  ),
-                  Text('000000',
+                    child: Text(
+                      'Total',
                       style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black)),
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    '${cart.totalPrice}',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text('کل',
-                        style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black)),
+                    child: Text(
+                      'کل',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -98,26 +122,33 @@ class BottomBar extends StatelessWidget {
                 height: 7.h,
                 width: 60.w,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25.0),
-                    color: Colors.white),
+                  borderRadius: BorderRadius.circular(25.0),
+                  color: Colors.white,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text('Buy Now',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black)),
+                      child: Text(
+                        'Buy Now',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text('ابھی خریدئے',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black)),
+                      child: Text(
+                        'ابھی خریدئے',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -137,7 +168,7 @@ List<SelectedItems> itemList = [
     urduName: "1 کلو ٹانگ چکن",
     price: 500,
     count: 0,
-    totalPrice: 500,
+    totalPrice: 0,
     isSelected: false,
   ),
   SelectedItems(
@@ -146,7 +177,7 @@ List<SelectedItems> itemList = [
     urduName: "1 کلو ٹانگ چکن",
     price: 500,
     count: 0,
-    totalPrice: 500,
+    totalPrice: 0,
     isSelected: false,
   ),
   SelectedItems(
@@ -155,7 +186,7 @@ List<SelectedItems> itemList = [
     urduName: "1 کلو ٹانگ چکن",
     price: 500,
     count: 0,
-    totalPrice: 500,
+    totalPrice: 0,
     isSelected: false,
   ),
   SelectedItems(
@@ -164,7 +195,7 @@ List<SelectedItems> itemList = [
     urduName: "1 کلو ٹانگ چکن",
     price: 500,
     count: 0,
-    totalPrice: 500,
+    totalPrice: 0,
     isSelected: false,
   ),
 ];
