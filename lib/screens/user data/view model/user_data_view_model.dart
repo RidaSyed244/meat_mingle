@@ -49,6 +49,16 @@ class UserDataModel extends StateNotifier {
     });
   }
 
+  Future<void> updateUserData() async {
+    await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({
+      'userLat': _currentLocation?.longitude,
+      'userLong': _currentLocation?.latitude,
+    });
+  }
+
   void showCustomSnackbar(
       BuildContext context, String title, String description) {
     ScaffoldMessenger.of(context).showSnackBar(

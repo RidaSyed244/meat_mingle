@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meat_mingle/color%20pallete/colors.dart';
 import 'package:meat_mingle/custom%20data/custom%20buttons/custom_buttons.dart';
-import 'package:meat_mingle/screens/dashboard/widgets/widgets.dart';
 import 'package:meat_mingle/screens/update%20location/controller/controller.dart';
 import 'package:meat_mingle/screens/update%20location/widgets/widgets.dart';
+import 'package:meat_mingle/screens/user%20data/view/user_data_screen.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
-class UpdateLocation extends StatefulWidget {
+class UpdateLocation extends ConsumerStatefulWidget {
   const UpdateLocation({Key? key}) : super(key: key);
 
   @override
-  State<UpdateLocation> createState() => _UpdateLocationState();
+  ConsumerState<UpdateLocation> createState() => _UpdateLocationState();
 }
 
-class _UpdateLocationState extends State<UpdateLocation> {
+class _UpdateLocationState extends ConsumerState<UpdateLocation> {
   bool isManual = false;
   bool isMap = false;
 
   @override
   Widget build(BuildContext context) {
-    var hight = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
+    final userData = ref.watch(userDataModel);
 
     return Scaffold(
       backgroundColor: ColorPalette.appBGcolor,
@@ -36,29 +37,31 @@ class _UpdateLocationState extends State<UpdateLocation> {
               borderRadius: BorderRadius.circular(70),
               child: Image.asset(
                 "assets/images/meat_logo.png",
-                height: 50,
-                width: 50,
+                height: 14.h,
+                width: 14.w,
                 fit: BoxFit.cover,
               ),
             ),
           ),
         ],
-        title: Text("30 منٹ میں تازہ چکن اپ کے دروازے پر",
-            style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black)),
+        title: Text(
+          "30 منٹ میں تازہ چکن اپ کے دروازے پر",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
       ),
       body: ListView(
         scrollDirection: Axis.vertical,
         children: [
           SizedBox(
-            height: hight * 0.05,
+            height: 5.h,
           ),
-          //Text in center
           Center(
             child: Text(
-              "Set your location",
+              "Update your location",
               style: TextStyle(
                 fontSize: 23,
                 fontWeight: FontWeight.bold,
@@ -67,7 +70,7 @@ class _UpdateLocationState extends State<UpdateLocation> {
             ),
           ),
           SizedBox(
-            height: hight * 0.05,
+            height: 3.h,
           ),
           Padding(
             padding: EdgeInsets.all(10.0),
@@ -82,114 +85,73 @@ class _UpdateLocationState extends State<UpdateLocation> {
               ),
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      CircularCheckBox(
-                          value: isManual,
-                          onChanged: (value) {
-                            setState(() {
-                              isManual = !isManual;
-                            });
-                          }),
-                      CustomButtons(
-                          text: "Enter Address Manually",
-                          height: hight * 0.07,
-                          width: width * 0.6,
-                          textcolor: Colors.black,
-                          onPressed: () {
-                            setState(() {
-                              isManual = !isManual;
-                            });
-                          },
-                          color: ColorPalette.appBGcolor,
-                          fontSize: 23),
-                    ],
-                  ),
-                  AnimatedContainer(
-                    duration: Duration(milliseconds: 300),
-                    height: isManual ? hight * 0.2 : 0,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: hight * 0.03,
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Container(
-                              height: hight * 0.06,
-                              width: width * 0.7,
-                              child: TextField(
-                                controller: userUpdatedLocationController,
-                                textAlign: TextAlign.left,
-                                decoration: InputDecoration(
-                                  hintText: 'Your address',
-                                  hintStyle: TextStyle(
-                                      color: Colors.black, fontSize: 18),
-                                  filled: true,
-                                  fillColor: ColorPalette.appBGcolor,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    borderSide: BorderSide.none,
-                                    // Remove the visible border
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: hight * 0.03,
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Container(
-                              height: hight * 0.05,
-                              width: width * 0.2,
-                              decoration: BoxDecoration(
-                                color: ColorPalette.appBGcolor,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Center(
-                                  child: Text(
-                                "Save",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              )),
-                            ),
-                          ),
-                        ],
-                      ),
+                  Container(
+                    width: 90.w,
+                    decoration: BoxDecoration(
+                      color: Colors.yellow, // Yellow background color
+                      borderRadius:
+                          BorderRadius.circular(30), // Rounded corners
+                    ),
+                    child: RadioListTile(
+                      title: Text('Current Location'),
+                      value: 1,
+                      groupValue: userData,
+                      onChanged: (value) async {
+                        await ref
+                            .read(userDataModel.notifier)
+                            .setSelectedOption(value as int);
+                        await ref
+                            .read(userDataModel.notifier)
+                            .getCurrentLocation();
+                        await ref.read(userDataModel.notifier).updateUserData();
+
+                        ref.read(userDataModel.notifier).showCustomSnackbar(
+                              context,
+                              "Got It!!!",
+                              "Your current location has been saved. You can now proceed.",
+                            );
+                      },
+                      activeColor: Colors.white,
                     ),
                   ),
-                  SizedBox(
-                    height: hight * 0.05,
-                  ),
-                  Row(
-                    children: [
-                      CircularCheckBox(
-                          value: isMap,
-                          onChanged: (value) {
-                            setState(() {
-                              isMap = !isMap;
-                            });
-                          }),
-                      CustomButtons(
-                          text: "Choose on Map",
-                          height: hight * 0.07,
-                          width: width * 0.6,
-                          textcolor: Colors.black,
-                          onPressed: () {},
-                          color: ColorPalette.appBGcolor,
-                          fontSize: 23),
-                    ],
+                  SizedBox(height: 3.h),
+                  Container(
+                    width: 90.w,
+                    decoration: BoxDecoration(
+                      color: Colors.yellow, // Yellow background color
+                      borderRadius:
+                          BorderRadius.circular(30), // Rounded corners
+                    ),
+                    child: RadioListTile(
+                      title: Text('Choose on Map'),
+                      value: 2,
+                      groupValue: userData,
+                      onChanged: (value) {
+                        ref
+                            .read(userDataModel.notifier)
+                            .setSelectedOption(value as int);
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => MapSceen()),
+                        // );
+                      },
+                      activeColor: Colors.black,
+                    ),
                   ),
                 ],
               ),
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+            child: CustomButtons(
+                text: "Confirm now",
+                height: 7.h,
+                width: 60.w,
+                textcolor: Colors.white,
+                onPressed: () {},
+                color: Colors.black,
+                fontSize: 23),
           ),
         ],
       ),

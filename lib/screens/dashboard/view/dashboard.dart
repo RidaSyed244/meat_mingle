@@ -25,6 +25,14 @@ class _DashboardState extends ConsumerState<Dashboard> {
     ref.read(dashboardModel).decrement(item);
   }
 
+  void addToCartt(SelectedItems item) {
+    ref.read(dashboardModel.notifier).addToCart(item);
+  }
+
+  void removeFromCartt(SelectedItems item) {
+    ref.read(dashboardModel.notifier).removeFromCart(item);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,9 +124,11 @@ class _DashboardState extends ConsumerState<Dashboard> {
                         ),
                         icon2pess: () {
                           decrementItem(item);
+                          removeFromCartt(item);
                         },
                         icon1pess: () {
                           incrementItem(item);
+                          addToCartt(item);
                         },
                         removeIcon: Icon(
                           Icons.remove,

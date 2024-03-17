@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meat_mingle/color%20pallete/colors.dart';
 import 'package:meat_mingle/custom%20data/custom%20buttons/custom_buttons.dart';
+import 'package:meat_mingle/screens/dashboard/model/dashboard_model.dart';
+import 'package:meat_mingle/screens/dashboard/view/dashboard.dart';
 import 'package:meat_mingle/screens/order%20confirmation/view%20model/order_confirmation_view_model.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
-class ConfirmOrders extends StatefulWidget {
+class ConfirmOrders extends ConsumerStatefulWidget {
   const ConfirmOrders({super.key});
 
   @override
-  State<ConfirmOrders> createState() => _ConfirmOrdersState();
+  ConsumerState<ConfirmOrders> createState() => _ConfirmOrdersState();
 }
 
-class _ConfirmOrdersState extends State<ConfirmOrders> {
+class _ConfirmOrdersState extends ConsumerState<ConfirmOrders> {
   @override
   Widget build(BuildContext context) {
-    var hight = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
+    final cart = ref.watch(dashboardModel);
 
     return Scaffold(
       backgroundColor: ColorPalette.appBGcolor,
@@ -31,8 +34,8 @@ class _ConfirmOrdersState extends State<ConfirmOrders> {
               borderRadius: BorderRadius.circular(70),
               child: Image.asset(
                 "assets/images/meat_logo.png",
-                height: 50,
-                width: 50,
+                height: 14.h,
+                width: 14.w,
                 fit: BoxFit.cover,
               ),
             ),
@@ -40,7 +43,7 @@ class _ConfirmOrdersState extends State<ConfirmOrders> {
         ],
         title: Text("30 منٹ میں تازہ چکن اپ کے دروازے پر",
             style: TextStyle(
-                fontSize: 16,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.black)),
       ),
@@ -49,18 +52,18 @@ class _ConfirmOrdersState extends State<ConfirmOrders> {
         child: Column(
           children: [
             SizedBox(
-              height: 30,
+              height: 5.h,
             ),
             Align(
               alignment: Alignment.center,
               child: Text("Order Confirmation",
                   style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
                       color: Colors.black)),
             ),
             SizedBox(
-              height: 20,
+              height: 3.h,
             ),
             Padding(
               padding: EdgeInsets.all(12.0),
@@ -71,7 +74,7 @@ class _ConfirmOrdersState extends State<ConfirmOrders> {
                 ),
                 child: SingleChildScrollView(
                   child: DataTable(
-                    columnSpacing: 45,
+                    columnSpacing: 12.w,
                     columns: [
                       DataColumn(
                           label: Text('Price',
@@ -80,12 +83,17 @@ class _ConfirmOrdersState extends State<ConfirmOrders> {
                       DataColumn(label: Text('Quantity')),
                       DataColumn(label: Text('Total')),
                     ],
-                    rows: orders.map((order) {
+                    rows: cart.allCartItems.map((order) {
+                      // Using selectedItems instead of 'orders'
                       return DataRow(cells: [
-                        DataCell(Text(order.itemPrice)),
-                        DataCell(Text(order.productName)),
-                        DataCell(Text(order.quantity)),
-                        DataCell(Text(order.totalPrice)),
+                        DataCell(Text(order.price
+                            .toString())), // Assuming price is int, convert it to string
+                        DataCell(Text(
+                            order.name ?? '')), // Display name, if available
+                        DataCell(Text(order.count
+                            .toString())), // Assuming count is int, convert it to string
+                        DataCell(Text(order.totalPrice
+                            .toString())), // Assuming totalPrice is int, convert it to string
                       ]);
                     }).toList(),
                   ),
@@ -93,12 +101,12 @@ class _ConfirmOrdersState extends State<ConfirmOrders> {
               ),
             ),
             SizedBox(
-              height: 20,
+              height: 5.h,
             ),
             CustomButtons(
               text: "Confirm Now",
-              height: hight * 0.06,
-              width: width * 0.7,
+              height: 8.h,
+              width: 80.w,
               textcolor: Colors.white,
               onPressed: () {},
               color: Colors.black,

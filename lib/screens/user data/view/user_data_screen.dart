@@ -111,7 +111,8 @@ class _UserDataState extends ConsumerState<UserData> {
                 await ref
                     .read(userDataModel.notifier)
                     .setSelectedOption(value as int);
-                await ref.watch(userDataModel.notifier).getCurrentLocation();
+                await ref.read(userDataModel.notifier).getCurrentLocation();
+                await ref.read(userDataModel.notifier).addUserData();
                 ref.read(userDataModel.notifier).showCustomSnackbar(
                       context,
                       "Got It!!!",

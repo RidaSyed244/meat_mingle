@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meat_mingle/screens/dashboard/model/dashboard_model.dart';
 import 'package:meat_mingle/screens/dashboard/view/dashboard.dart';
+import 'package:meat_mingle/screens/order%20confirmation/view/confirm_order.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
@@ -118,39 +119,50 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                 ),
               ),
               SizedBox(height: 1.h),
-              Container(
-                height: 7.h,
-                width: 60.w,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25.0),
-                  color: Colors.white,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        'Buy Now',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+              GestureDetector(
+                onTap: () {
+                  print(cart.cartItems);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ConfirmOrders(),
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 7.h,
+                  width: 60.w,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25.0),
+                    color: Colors.white,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          'Buy Now',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        'ابھی خریدئے',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          'ابھی خریدئے',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
