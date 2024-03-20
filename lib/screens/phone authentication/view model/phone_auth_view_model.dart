@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:meat_mingle/screens/phone%20authentication/controllers/controllers.dart';
 import 'package:meat_mingle/screens/phone%20authentication/view/phone_auth.dart';
 import 'package:meat_mingle/screens/user%20data/view/user_data_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PhoneAuthState extends StateNotifier {
   PhoneAuthState() : super(0);
@@ -20,6 +21,10 @@ class PhoneAuthState extends StateNotifier {
         "OtpCode": otpController.text,
         // "UserToken": token,
       });
+      final pref = await SharedPreferences.getInstance();
+      pref.setString('UserPhoneNo', phoneController.text);
+      pref.setString('OtpCode', otpController.text);
+      // pref.setString('UserToken', token);
     } catch (e) {
       isLoading = false;
       // Notify listeners to update UI

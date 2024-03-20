@@ -8,41 +8,52 @@ import 'package:meat_mingle/screens/phone%20authentication/controllers/controlle
 class UserDataModel extends StateNotifier {
   UserDataModel() : super(0);
   LocationData? _currentLocation;
+  bool isLoading = false; // Track loading state
 
   setSelectedOption(int value) {
     state = value;
   }
 
-  Future<void> getCurrentLocation() async {
-    Location location = Location();
-    bool serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
+  Future<void> getCurrentLocation(BuildContext context) async {
+    try {
+      Location location = Location();
+      bool serviceEnabled = await location.serviceEnabled();
       if (!serviceEnabled) {
-        return;
+        serviceEnabled = await location.requestService();
+        if (!serviceEnabled) {
+          return;
+        }
       }
-    }
 
-    PermissionStatus permissionStatus = await location.hasPermission();
-    if (permissionStatus == PermissionStatus.denied) {
-      permissionStatus = await location.requestPermission();
-      if (permissionStatus != PermissionStatus.granted) {
-        return;
+      PermissionStatus permissionStatus = await location.hasPermission();
+      if (permissionStatus == PermissionStatus.denied) {
+        permissionStatus = await location.requestPermission();
+        if (permissionStatus != PermissionStatus.granted) {
+          return;
+        }
       }
+
+      LocationData currentLocation = await location.getLocation();
+      _currentLocation = currentLocation;
+
+      print('Latitude: ${_currentLocation?.latitude}');
+      print('Longitude: ${_currentLocation?.longitude}');
+    } catch (e) {
+      showCustomSnackbar(
+        context,
+        'Error',
+        'Failed to get current location. Please check your settings.',
+      );
+    } finally {
+      isLoading = false;
     }
-
-    LocationData currentLocation = await location.getLocation();
-    _currentLocation = currentLocation;
-
-    print('Latitude: ${_currentLocation!.latitude}');
-    print('Longitude: ${_currentLocation!.longitude}');
   }
 
   Future<void> addUserData() async {
     await FirebaseFirestore.instance
         .collection('Users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .set({
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .update({
       'userName': nameController.text,
       'userLat': _currentLocation?.longitude,
       'userLong': _currentLocation?.latitude,
@@ -57,6 +68,7 @@ class UserDataModel extends StateNotifier {
       'userLat': _currentLocation?.longitude,
       'userLong': _currentLocation?.latitude,
     });
+    print('User data updated');
   }
 
   void showCustomSnackbar(

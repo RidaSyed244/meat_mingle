@@ -6,6 +6,7 @@ import 'package:meat_mingle/custom%20data/custom%20text%20fields/custom_text_fie
 import 'package:meat_mingle/screens/dashboard/view/dashboard.dart';
 import 'package:meat_mingle/screens/phone%20authentication/controllers/controllers.dart';
 import 'package:meat_mingle/screens/user%20data/view%20model/user_data_view_model.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 final userDataModel = StateNotifierProvider((ref) {
   return UserDataModel();
@@ -22,10 +23,8 @@ class _UserDataState extends ConsumerState<UserData> {
   @override
   Widget build(BuildContext context) {
     final userData = ref.watch(userDataModel);
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: ColorPalette.appBGcolor,
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -33,7 +32,7 @@ class _UserDataState extends ConsumerState<UserData> {
         title: Text(
           "User Data",
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 20.sp,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -41,35 +40,35 @@ class _UserDataState extends ConsumerState<UserData> {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-        child: Column(
+        child: ListView(
           children: [
             Text(
               'Meat Mingle',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 50,
+                fontSize: 30.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 2.h),
             Text(
               'Please provide your name\nand address below',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.w500,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 25),
+            SizedBox(height: 3.h),
             Align(
               alignment: Alignment.topLeft,
               child: Text(
                 "Name*",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.w600,
                   color: ColorPalette.appTextColor,
                 ),
@@ -87,16 +86,16 @@ class _UserDataState extends ConsumerState<UserData> {
               textcolor: ColorPalette.appTextColor,
               onPressed: () {},
               color: ColorPalette.appBGcolor,
-              fontSize: 16,
+              fontSize: 16.sp,
             ),
-            SizedBox(height: 25),
+            SizedBox(height: 5.h),
             Align(
               alignment: Alignment.topLeft,
               child: Text(
                 "Address*",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.w600,
                   color: ColorPalette.appTextColor,
                 ),
@@ -111,7 +110,9 @@ class _UserDataState extends ConsumerState<UserData> {
                 await ref
                     .read(userDataModel.notifier)
                     .setSelectedOption(value as int);
-                await ref.read(userDataModel.notifier).getCurrentLocation();
+                await ref
+                    .read(userDataModel.notifier)
+                    .getCurrentLocation(context);
                 await ref.read(userDataModel.notifier).addUserData();
                 ref.read(userDataModel.notifier).showCustomSnackbar(
                       context,
@@ -119,7 +120,7 @@ class _UserDataState extends ConsumerState<UserData> {
                       "Your current location has been saved. You can now proceed.",
                     );
               },
-              activeColor: Colors.black, // Change the fill color when selected
+              activeColor: Colors.black,
             ),
             RadioListTile(
               title: Text('Choose on Map'),
@@ -136,23 +137,30 @@ class _UserDataState extends ConsumerState<UserData> {
               },
               activeColor: Colors.black, // Change the fill color when selected
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 3.h),
             CustomButtons(
               text: "Continue",
-              height: height * 0.07,
-              width: width * 0.6,
+              height: 7.h,
+              width: 60.w,
               textcolor: Colors.white,
-              onPressed: () {
+              onPressed: () async {
                 if (userData == 1) {
+                  await ref
+                      .read(userDataModel.notifier)
+                      .getCurrentLocation(context);
+                  await ref.read(userDataModel.notifier).updateUserData();
+
+                  ref.read(userDataModel.notifier).showCustomSnackbar(
+                        context,
+                        "Got It!!!",
+                        "Your current location has been updated. You can now proceed.",
+                      );
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => Dashboard()),
                   );
                 } else if (userData == 2) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Dashboard()),
-                  );
                 } else {
                   ref.read(userDataModel.notifier).showCustomSnackbar(
                         context,
@@ -162,7 +170,7 @@ class _UserDataState extends ConsumerState<UserData> {
                 }
               },
               color: Colors.black,
-              fontSize: 20,
+              fontSize: 20.sp,
             )
           ],
         ),

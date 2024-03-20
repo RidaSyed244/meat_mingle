@@ -1,7 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meat_mingle/screens/order%20confirmation/model/order_confimation_model.dart';
 
-final List<OrderItem> orders = [
-  OrderItem("\$10", "Product A", "2", "\$20"),
-  OrderItem("\$15", "Product B", "1", "\$15"),
-  OrderItem("\$8", "Product C", "3", "\$24"),
-];
+class ConfirmOrder extends StateNotifier {
+  ConfirmOrder() : super(0);
+  Future<void> confirmOrders(
+    subtotalls,
+    userLatitude,
+    userLongitude,
+    userName,
+  ) async {
+    final allOrders = FirebaseFirestore.instance
+        .collection("AllOrders")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection("Orders");
+  }
+}

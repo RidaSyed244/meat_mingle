@@ -35,6 +35,10 @@ class _CustomTextFieldsState extends State<CustomTextFields> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: widget.fontSize,
+      ),
       keyboardType: widget.keyBoardType,
       controller: widget.controller,
       textAlign: TextAlign.left,

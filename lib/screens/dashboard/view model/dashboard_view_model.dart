@@ -41,13 +41,16 @@ class DashboardModel extends ChangeNotifier {
   }
 
   void removeFromCart(SelectedItems item) {
-    itemList.remove(item);
+    allCartItems.remove(item);
     notifyListeners();
   }
 
   decrement(SelectedItems selectedItems) {
-    selectedItems.count--;
-    selectedItems.totalPrice = selectedItems.count * selectedItems.price!;
+    //0 is the minimum value
+    if (selectedItems.count > 0) {
+      selectedItems.count--;
+      selectedItems.totalPrice = selectedItems.count * selectedItems.price!;
+    }
     notifyListeners();
   }
 

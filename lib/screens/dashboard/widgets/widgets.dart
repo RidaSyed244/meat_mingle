@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meat_mingle/screens/dashboard/model/dashboard_model.dart';
 import 'package:meat_mingle/screens/dashboard/view/dashboard.dart';
 import 'package:meat_mingle/screens/order%20confirmation/view/confirm_order.dart';
+import 'package:meat_mingle/screens/update%20location/view/update_location.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
@@ -125,7 +126,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ConfirmOrders(),
+                      builder: (context) => UpdateLocation(),
                     ),
                   );
                 },
