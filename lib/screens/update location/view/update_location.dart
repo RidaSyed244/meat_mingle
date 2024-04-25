@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meat_mingle/color%20pallete/colors.dart';
+import 'package:meat_mingle/constants/constants.dart';
 import 'package:meat_mingle/custom%20data/custom%20buttons/custom_buttons.dart';
 import 'package:meat_mingle/screens/order%20confirmation/view/confirm_order.dart';
 import 'package:meat_mingle/screens/update%20location/controller/controller.dart';
 import 'package:meat_mingle/screens/update%20location/widgets/widgets.dart';
 import 'package:meat_mingle/screens/user%20data/view/user_data_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+
+final selectedRadioProvider = StateProvider<int>((ref) => 0);
 
 class UpdateLocation extends ConsumerStatefulWidget {
   const UpdateLocation({Key? key}) : super(key: key);
@@ -19,9 +22,13 @@ class _UpdateLocationState extends ConsumerState<UpdateLocation> {
   bool isManual = false;
   bool isMap = false;
 
+  void setSelectedRadio(int val) {
+    ref.read(selectedRadioProvider.notifier).state = val;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final userData = ref.watch(userDataModel);
+    final selectedRadio = ref.watch(selectedRadioProvider);
 
     return Scaffold(
         backgroundColor: ColorPalette.appBGcolor,
@@ -96,13 +103,15 @@ class _UpdateLocationState extends ConsumerState<UpdateLocation> {
                       child: RadioListTile(
                         title: Text('Current Location'),
                         value: 1,
-                        groupValue: userData,
+                        groupValue: selectedRadio,
                         onChanged: (value) async {
+                          setSelectedRadio(value as int);
+
                           await ref
                               .read(userDataModel.notifier)
-                              .setSelectedOption(value as int);
+                              .getCurrentLocation(context);
                         },
-                        activeColor: Colors.white,
+                        activeColor: Colors.black,
                       ),
                     ),
                     SizedBox(height: 3.h),
@@ -116,11 +125,10 @@ class _UpdateLocationState extends ConsumerState<UpdateLocation> {
                       child: RadioListTile(
                         title: Text('Choose on Map'),
                         value: 2,
-                        groupValue: userData,
+                        groupValue: selectedRadio,
                         onChanged: (value) {
-                          ref
-                              .read(userDataModel.notifier)
-                              .setSelectedOption(value as int);
+                          setSelectedRadio(value as int);
+
                           // Navigator.push(
                           //   context,
                           //   MaterialPageRoute(builder: (context) => MapSceen()),
@@ -141,41 +149,21 @@ class _UpdateLocationState extends ConsumerState<UpdateLocation> {
                   width: 60.w,
                   textcolor: Colors.white,
                   onPressed: () async {
-                    if (userData == 1) {
-                      await ref
-                          .read(userDataModel.notifier)
-                          .getCurrentLocation(context);
-                      await ref.read(userDataModel.notifier).updateUserData();
+                    await ref.read(userDataModel.notifier).updateUserData();
 
-                      ref.read(userDataModel.notifier).showCustomSnackbar(
-                            context,
-                            "Got It!!!",
-                            "Your current location has been updated. You can now proceed.",
-                          );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ConfirmOrders()),
-                      );
-                    } else if (userData == 2) {
-                    } else {
-                      ref.read(userDataModel.notifier).showCustomSnackbar(
-                            context,
-                            "Alert!!!",
-                            "Please enter your name and select address option.",
-                          );
-                    }
+                    showCustomSnackbar(
+                      context,
+                      "Got It!!!",
+                      "Your current location has been updated. You can now proceed.",
+                    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ConfirmOrders()),
+                    );
                   },
                   color: Colors.black,
                   fontSize: 23),
             ),
-            ref.read(userDataModel.notifier).isLoading
-                ? Center(
-                    child: CircularProgressIndicator(
-                      color: Colors.black,
-                    ),
-                  )
-                : Container(),
           ],
         ));
   }

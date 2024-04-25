@@ -43,6 +43,7 @@ dependencies:
   # workmanager: ^0.5.2
   responsive_sizer: ^3.3.0+1
   shared_preferences: ^2.2.2
+  firebase_messaging: ^14.7.17
 
 dev_dependencies:
   flutter_test:

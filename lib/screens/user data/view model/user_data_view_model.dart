@@ -3,16 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:location/location.dart';
+import 'package:meat_mingle/constants/constants.dart';
 import 'package:meat_mingle/screens/phone%20authentication/controllers/controllers.dart';
 
 class UserDataModel extends StateNotifier {
-  UserDataModel() : super(0);
+  UserDataModel() : super(false);
   LocationData? _currentLocation;
-  bool isLoading = false; // Track loading state
-
-  setSelectedOption(int value) {
-    state = value;
-  }
 
   Future<void> getCurrentLocation(BuildContext context) async {
     try {
@@ -44,20 +40,25 @@ class UserDataModel extends StateNotifier {
         'Error',
         'Failed to get current location. Please check your settings.',
       );
-    } finally {
-      isLoading = false;
     }
   }
 
   Future<void> addUserData() async {
-    await FirebaseFirestore.instance
-        .collection('Users')
-        .doc(FirebaseAuth.instance.currentUser?.uid)
-        .update({
-      'userName': nameController.text,
-      'userLat': _currentLocation?.longitude,
-      'userLong': _currentLocation?.latitude,
-    });
+    state = true; // Set isLoading to true before starting loading
+    try {
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .update({
+        'userName': nameController.text,
+        'userLat': _currentLocation?.longitude,
+        'userLong': _currentLocation?.latitude,
+      });
+    } catch (e) {
+      // Handle error
+    } finally {
+      state = false; // Set isLoading back to false after loading completes
+    }
   }
 
   Future<void> updateUserData() async {
@@ -69,38 +70,5 @@ class UserDataModel extends StateNotifier {
       'userLong': _currentLocation?.latitude,
     });
     print('User data updated');
-  }
-
-  void showCustomSnackbar(
-      BuildContext context, String title, String description) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        behavior: SnackBarBehavior.floating, // Set behavior to floating
-        backgroundColor: Colors.black, // Set background color to black
-        content: Padding(
-          padding: EdgeInsets.all(16.0), // Add padding around the content
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  color: Colors.white, // Set title text color to white
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 4),
-              Text(
-                description,
-                style: TextStyle(
-                  color: Colors.white, // Set description text color to white
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }
