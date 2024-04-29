@@ -117,11 +117,12 @@ class _UserDataState extends ConsumerState<UserData> {
                     value: 1,
                     groupValue: selectedRadio,
                     onChanged: (val) async {
-                      setSelectedRadio(val as int);
-
                       await ref
                           .read(userDataModel.notifier)
                           .getCurrentLocation(context);
+                      locationEnabled == true
+                          ? setSelectedRadio(val as int)
+                          : null;
                     },
                     activeColor: Colors.black),
                 RadioListTile(
@@ -144,20 +145,13 @@ class _UserDataState extends ConsumerState<UserData> {
                   width: 60,
                   textcolor: Colors.white,
                   onPressed: () async {
-                    if (nameController.text.isEmpty) {
+                    if (nameController.text.isEmpty && selectedRadio == 0) {
                       showCustomSnackbar(
                         context,
                         'Error',
-                        'Please enter your name',
+                        'Please enter your name and location to proceed.',
                       );
-                      return;
                     } else {
-                      await ref.read(userDataModel.notifier).addUserData();
-                      showCustomSnackbar(
-                        context,
-                        "Got It!!!",
-                        "Your location has been saved. You can now proceed.",
-                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => Dashboard()),

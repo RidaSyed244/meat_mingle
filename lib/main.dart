@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:meat_mingle/screens/dashboard/view/dashboard.dart';
 import 'package:meat_mingle/screens/phone%20authentication/view/phone_auth.dart';
-import 'package:meat_mingle/screens/user%20data/view/user_data_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

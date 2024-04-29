@@ -110,6 +110,7 @@ class _UpdateLocationState extends ConsumerState<UpdateLocation> {
                           await ref
                               .read(userDataModel.notifier)
                               .getCurrentLocation(context);
+                          print("Get updated location");
                         },
                         activeColor: Colors.black,
                       ),

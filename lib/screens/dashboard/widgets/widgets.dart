@@ -205,7 +205,7 @@ List<SelectedItems> itemList = [
   SelectedItems(
     imagePath: "assets/images/chick.png",
     name: "1 kg leg Chicken",
-    urduName: "1 کلو ٹانگ چکن",
+    urduName: "1 کلو ٹانگ چ",
     price: 500,
     count: 0,
     totalPrice: 0,
